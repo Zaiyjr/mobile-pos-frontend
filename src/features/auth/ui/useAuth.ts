@@ -49,8 +49,10 @@ export const useAuth = () => {
     setLoading(true);
     setError(null);
     try {
-      await authApi.register(payload);
-      return await login(payload.username, payload.password, "customer");
+      const { token, user } = await authApi.register(payload);
+      saveAuthSession(token, user);
+      redirectByRole(typeof user.role === "string" ? user.role : user.role?.name);
+      return true;
     } catch (err: unknown) {
       setError(getApiErrorMessage(err, "ບໍ່ສາມາດສ້າງບັນຊີໄດ້"));
       return false;

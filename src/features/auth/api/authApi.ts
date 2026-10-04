@@ -17,7 +17,8 @@ export const authApi = {
     const response = await apiClient.post<ApiEnvelope<AuthSession>>("/auth/login", { username, password });
     return response.data.data;
   },
-  async register(input: RegisterInput) {
-    await apiClient.post<ApiEnvelope<unknown>>("/auth/register", input);
+  async register(input: RegisterInput): Promise<AuthSession> {
+    const response = await apiClient.post<ApiEnvelope<AuthSession>>("/auth/register", input);
+    return response.data.data;
   },
 };
