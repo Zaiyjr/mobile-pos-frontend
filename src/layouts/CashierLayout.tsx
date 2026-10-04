@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/features/auth/ui/useAuth";
 import {
   ShoppingCart,
   LogOut,
   History,
-  User,
   Clock,
   Zap,
   ChevronRight,

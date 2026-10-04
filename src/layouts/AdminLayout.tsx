@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Outlet, Link, useLocation } from "react-router-dom";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth } from "@/features/auth/ui/useAuth";
 import {
   ShieldCheck,
   Package,
   Layers,
   LogOut,
   BarChart3,
-  ChevronDown,
   Menu,
   X,
   ShoppingCart,
   Clock,
   LayoutDashboard,
-  Settings,
   User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
