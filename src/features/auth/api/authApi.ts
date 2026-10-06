@@ -7,14 +7,14 @@ export interface AuthSession {
 }
 
 export interface RegisterInput {
-  username: string;
+  email: string;
   password: string;
   name: string;
 }
 
 export const authApi = {
-  async login(username: string, password: string) {
-    const response = await apiClient.post<ApiEnvelope<AuthSession>>("/auth/login", { username, password });
+  async login(email: string, password: string) {
+    const response = await apiClient.post<ApiEnvelope<AuthSession>>("/auth/login", { email, password });
     return response.data.data;
   },
   async register(input: RegisterInput): Promise<AuthSession> {

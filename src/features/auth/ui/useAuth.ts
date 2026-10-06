@@ -23,11 +23,11 @@ export const useAuth = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const login = async (username: string, password: string, mode: AuthMode = "customer") => {
+  const login = async (email: string, password: string, mode: AuthMode = "customer") => {
     setLoading(true);
     setError(null);
     try {
-      const { token, user } = await authApi.login(username, password);
+      const { token, user } = await authApi.login(email.trim(), password);
 
       const role = typeof user.role === "string" ? user.role : user.role?.name;
       if (mode === "staff" && role === "USER") {
@@ -38,7 +38,7 @@ export const useAuth = () => {
       redirectByRole(role);
       return true;
     } catch (err: unknown) {
-      setError(getApiErrorMessage(err, "ຊື່ຜູ້ໃຊ້ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ"));
+      setError(getApiErrorMessage(err, "ອີເມວ ຫຼື ລະຫັດຜ່ານບໍ່ຖືກຕ້ອງ"));
       return false;
     } finally {
       setLoading(false);

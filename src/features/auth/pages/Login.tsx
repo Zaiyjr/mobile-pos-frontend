@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 import { useAuth } from "@/features/auth/ui/useAuth";
-import { Lock, User, ShieldAlert, Eye, EyeOff, Loader2, UserCheck } from "lucide-react";
+import { Lock, Mail, ShieldAlert, Eye, EyeOff, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { motion } from "framer-motion";
 
 export default function Login() {
-  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false); // 💡 ເພີ່ມ state ເປີດ-ປິດລະຫັດ
   const { login, loading, error } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    login(username, password);
+    login(email, password);
   };
 
   return (
@@ -36,6 +36,7 @@ export default function Login() {
           <motion.div 
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
             className="p-3 bg-red-50 text-red-600 rounded-xl text-xs font-bold flex items-center gap-2 border border-red-100"
+            role="alert"
           >
             <ShieldAlert className="h-4 w-4 shrink-0" /> {error}
           </motion.div>
@@ -43,12 +44,17 @@ export default function Login() {
 
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div className="relative">
-            <User className="absolute left-3 top-3.5 h-4 w-4 text-slate-400" />
+            <Mail className="absolute left-3 top-3.5 h-4 w-4 text-slate-400" />
             <Input
-              placeholder="ຊື່ຜູ້ໃຊ້"
+              type="email"
+              name="email"
+              autoComplete="username"
+              aria-label="ອີເມວ"
+              placeholder="ອີເມວ"
               className="pl-10 h-12 bg-slate-50 border-slate-200 focus:border-blue-500 rounded-xl"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={loading}
               required
             />
           </div>
@@ -57,14 +63,19 @@ export default function Login() {
             <Lock className="absolute left-3 top-3.5 h-4 w-4 text-slate-400" />
             <Input
               type={showPassword ? "text" : "password"} // 💡 ປ່ຽນ type ຕາມ state
+              name="password"
+              autoComplete="current-password"
+              aria-label="ລະຫັດຜ່ານ"
               placeholder="ລະຫັດຜ່ານ"
               className="pl-10 pr-10 h-12 bg-slate-50 border-slate-200 focus:border-blue-500 rounded-xl"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              disabled={loading}
               required
             />
             <button
               type="button"
+              aria-label={showPassword ? "Hide password" : "Show password"}
               onClick={() => setShowPassword(!showPassword)}
               className="absolute right-3 top-3.5 text-slate-400 hover:text-slate-600"
             >
@@ -82,21 +93,6 @@ export default function Login() {
             ) : "ເຂົ້າສູ່ລະບົບ"}
           </Button>
 
-          <div className="relative flex items-center py-2">
-            <div className="flex-grow border-t border-slate-200"></div>
-            <span className="flex-shrink-0 mx-4 text-slate-400 text-xs font-medium">ຫຼື</span>
-            <div className="flex-grow border-t border-slate-200"></div>
-          </div>
-
-          <Button 
-            type="button" 
-            onClick={() => login("admin", "admin123", "staff")}
-            disabled={loading} 
-            className="w-full h-12 bg-white border-2 border-slate-200 text-slate-600 hover:bg-slate-50 hover:border-blue-400 hover:text-blue-600 font-bold rounded-xl transition-all active:scale-95 flex items-center justify-center gap-2"
-          >
-            <UserCheck className="h-5 w-5" />
-            ເຂົ້າສູ່ລະບົບສຳລັບທົດລອງ (Demo)
-          </Button>
         </form>
         
         <p className="text-center text-[10px] text-slate-300 font-bold uppercase tracking-widest">
