@@ -1,27 +1,19 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { authApi, type RegisterInput } from "@/features/auth/api/authApi";
 import { clearAuthSession, saveAuthSession } from "@/features/auth/model/authStorage";
 import { getApiErrorMessage } from "@/shared/api/client";
 
 type AuthMode = "customer" | "staff";
 
-const redirectByRole = (roleName?: string) => {
-  if (roleName === "ADMIN") {
-    window.location.href = "/admin";
-    return;
-  }
-
-  if (roleName === "CASHIER" || roleName === "EMPLOYEE") {
-    window.location.href = "/pos";
-    return;
-  }
-
-  window.location.href = "/pos";
-};
-
 export const useAuth = () => {
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const redirectByRole = (roleName?: string) => {
+    navigate(roleName === "ADMIN" ? "/admin" : "/pos", { replace: true });
+  };
 
   const login = async (email: string, password: string, mode: AuthMode = "customer") => {
     setLoading(true);
@@ -63,7 +55,7 @@ export const useAuth = () => {
 
   const logout = () => {
     clearAuthSession();
-    window.location.href = "/login";
+    navigate("/login", { replace: true });
   };
 
   return { login, register, logout, loading, error, clearError: () => setError(null) };
